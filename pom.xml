@@ -24,6 +24,9 @@
                 <configuration>
                     <appPackage>game</appPackage>
                     <mainClass>game.Player</mainClass>
+                    <showLineNumbers>true</showLineNumbers>
+                    <removeComments>false</removeComments>
+                    <removeEmptyLines>true</removeEmptyLines>
                 </configuration>
             </plugin>
             <plugin>
