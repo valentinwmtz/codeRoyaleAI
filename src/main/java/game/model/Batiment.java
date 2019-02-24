@@ -22,6 +22,7 @@ public class Batiment {
         this.positionX = positionX;
         this.positionY = positionY;
         this.rayon = rayon;
+        this.orRestant = -1;
     }
 
     public int getId() {

@@ -1,8 +1,10 @@
 package game;
 
+import game.model.Armee;
 import game.model.Batiment;
 import game.service.ArmeeService;
 import game.service.BatimentService;
+import game.service.LogiqueService;
 
 import java.util.Scanner;
 
@@ -15,6 +17,10 @@ class Player {
     public static void main(String args[]) {
         BatimentService batimentService = new BatimentService();
         ArmeeService armeeService = new ArmeeService();
+        batimentService.setArmeeService(armeeService);
+        armeeService.setBatimentService(batimentService);
+        LogiqueService logiqueService = new LogiqueService(armeeService, batimentService);
+
         Scanner in = new Scanner(System.in);
         int numSites = in.nextInt();
         for (int i = 0; i < numSites; i++) {
@@ -30,6 +36,7 @@ class Player {
         while (true) {
             int gold = in.nextInt();
             int touchedSite = in.nextInt(); // -1 if none
+            logiqueService.setSiteConstructionContactReine(touchedSite);
             for (int i = 0; i < numSites; i++) {
                 int siteId = in.nextInt();
                 int goldRemaining = in.nextInt(); // -1 if unknown
@@ -47,18 +54,27 @@ class Player {
                 int owner = in.nextInt();
                 int unitType = in.nextInt(); // -1 = QUEEN, 0 = KNIGHT, 1 = ARCHER, 2 = GIANT
                 int health = in.nextInt();
+                Armee armee = new Armee(x, y, owner, unitType, health);
+                armeeService.getArmees().add(armee);
             }
+
+            if (armeeService.getPositionDepartReineAmical() == null) {
+                armeeService.setPositionDepartReineAmical(armeeService.getAmicalReine().getPositionX() < 960 ? 0 : 1);
+            }
+
+            if (armeeService.getPointsDeVieDePartReineAmical() == null) {
+                armeeService.setPointsDeVieDePartReineAmical(armeeService.getAmicalReine().getPointsDeVie());
+            }
+
+            batimentService.updateBatimentDistanceAvecMaReine();
 
             // Write an action using System.out.println()
             // To debug: System.err.println("Debug messages...");
-            for (Batiment batiment : batimentService.getBatiments()) {
-                System.err.println(batiment);
-            }
 
             // First line: A valid queen action
             // Second line: A set of training instructions
-            System.out.println("WAIT");
-            System.out.println("TRAIN 1");
+            logiqueService.standarLogique();
+            System.out.println("TRAIN 0");
         }
     }
 }

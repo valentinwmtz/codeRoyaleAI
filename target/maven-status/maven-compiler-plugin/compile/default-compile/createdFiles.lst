@@ -1,6 +1,7 @@
-game\model\Armee.class
 game\model\Batiment.class
-game\Player.class
 game\service\ArmeeService.class
+game\constante\Constante.class
+game\model\Armee.class
+game\Player.class
 game\service\BatimentService.class
-game\constante\ArmeeConst.class
+game\service\LogiqueService.class
